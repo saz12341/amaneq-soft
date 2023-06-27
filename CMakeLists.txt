@@ -37,3 +37,4 @@ else()
 endif()
 
 add_subdirectory(StrLRTDC)
+add_subdirectory(StrHRTDC)
