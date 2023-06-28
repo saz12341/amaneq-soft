@@ -17,3 +17,7 @@ cd build
 make
 make install
 ```
+
+### Practical usage
+
+We recommend to make a symbolic link the to hul-core-lib install directory inside the amaneq-soft install directory.
