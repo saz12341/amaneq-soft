@@ -4,6 +4,7 @@
 #include<cstdio>
 #include<csignal>
 #include<list>
+#include<unistd.h>
 
 #include"HrTdcFuncs.hh"
 #include"BctBusBridgeFunc.hh"
