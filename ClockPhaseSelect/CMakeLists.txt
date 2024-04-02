@@ -13,6 +13,8 @@ foreach(val IN ITEMS
     set_length;
     get_center;
     get_length;
+    evaluate_center;
+    customize_center;
     )
 
   set(MY_OUTPUT_NAME ${val})  
