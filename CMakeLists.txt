@@ -44,3 +44,4 @@ endif()
 
 add_subdirectory(StrLRTDC)
 add_subdirectory(StrHRTDC)
+add_subdirectory(ClockPhaseSelect)
