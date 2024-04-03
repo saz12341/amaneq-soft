@@ -60,11 +60,15 @@ int main(int argc, char* argv[])
     u_local_center=(uint32_t)(local_center*(1<<29));
     printf("local_center (uint32_t): %08X\n",u_local_center);
   
+    // set tha acceptable shift value range
     fpga_module.WriteModule(kAddrEepromCenter,u_local_center,4);
     fpga_module.WriteModule(kAddrEepromLength,u_local_length,4);
+    
+    // ensure tha acceptable shift value range is written into EEPROM
     while(u_local_center!=fpga_module.ReadModule(kAddrEepromCenter,4)){}
     while(u_local_length!=fpga_module.ReadModule(kAddrEepromLength,4)){}
     
+    // reset CECE62002 clock
     fpga_module.WriteModule(kAddrPhaseOperate,0);
   }
   
