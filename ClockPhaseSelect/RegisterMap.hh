@@ -19,8 +19,8 @@ namespace LBUS{
     };
     enum Status
     {
-      kRegTimeout = 0x1,
-      kRegIsReady = 0x2,
+      kRegIsReady = 0x1,
+      kRegTimeout = 0x2
     };
   };
 };

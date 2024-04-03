@@ -15,6 +15,8 @@ foreach(val IN ITEMS
     get_length;
     evaluate_center;
     customize_center;
+    all_reset;
+    all_status;
     )
 
   set(MY_OUTPUT_NAME ${val})  
