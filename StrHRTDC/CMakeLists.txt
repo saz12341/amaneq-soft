@@ -3,7 +3,6 @@ set(LIB_NAME FwFuncs)
 
 foreach(val IN ITEMS
     activate_localstc;
-    daq;
     get_version_hrtdc;
     initialize;
     inject_error_mzn_sem;
