@@ -16,6 +16,7 @@ namespace LBUS{
 	  kTdcMaskMainD     = 0x1010'0000,  // W/R, [31:0] Channel mask for 32-63 ch
 	  kTdcMaskMznU      = 0x1020'0000,  // W/R, [31:0] Channel mask for 64-95 ch
 	  kTdcMaskMznD      = 0x1030'0000,  // W/R, [31:0] Channel mask for 96-127 ch
+	  kTdcMaskEx        = 0x10E0'0000,  // W/R, [31:0] Channel mask for 128-159 ch
 	  		    
 	  kEnBypass         = 0x1040'0000,  // W/R, [1:0]
 	  		    
