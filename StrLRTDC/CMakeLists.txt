@@ -6,8 +6,6 @@ set(MY_PUB_HEADER
   )
 
 foreach(val IN ITEMS
-    activate_localstc;
-    daq;
     set_tdcmask;
     )
 
