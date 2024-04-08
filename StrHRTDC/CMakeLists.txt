@@ -2,14 +2,19 @@ set(FW_NAME StrHRTDC)
 set(LIB_NAME FwFuncs)
 
 foreach(val IN ITEMS
-    activate_localstc;
     get_version_hrtdc;
     initialize;
     inject_error_mzn_sem;
+    read_mzn_register;
     read_mzn_sem;
     read_mzn_xadc;
+    read_mzn_scr;
+    reconfig_mzn;
     reset_mzn_sem;
     set_tdcmask;
+    show_mzn_laccp;
+    show_mzn_mikumari;
+    write_mzn_register;
     )
 
   set(MY_OUTPUT_NAME ${val})  

@@ -1,22 +1,23 @@
 #include <iostream>
-#include <iomanip>
-#include <ios>
 #include <cstdio>
+#include <ios>
+#include <iomanip>
+#include <sstream>
 
 #include "RegisterMap.hh"
 #include "FPGAModule.hh"
 #include "UDPRBCP.hh"
 #include "BctBusBridgeFunc.hh"
-#include "HrTdcFuncs.hh"
 
-enum argIndex{kBin, kIp, kMzn};
+enum argIndex{kBin, kIp, kMzn, kAddr, kNBytes};
 using namespace LBUS;
 using namespace LBUS::SHT_BASE;
+
 int main(int argc, char* argv[])
 {
   if(1 == argc){
     std::cout << "Usage\n";
-    std::cout << "initialize [IP address] [Mezzanine exisitence]" << std::endl;
+    std::cout << "read_mzn_register [IP address] [Mezzanine existence] [Address (hex)] [Num bytes]" << std::endl;
     std::cout << " Description of mezzanine existence" << std::endl;
     std::cout << " - up   (mezzanine is attached on upper slot)" << std::endl;
     std::cout << " - low  (mezzanine is attached on lower slot)" << std::endl;
@@ -25,8 +26,10 @@ int main(int argc, char* argv[])
   }// usage
   
   // body ------------------------------------------------------
-  std::string board_ip  = argv[kIp];
-  std::string mezzanine = argv[kMzn];
+  std::string board_ip     = argv[kIp];
+  std::string mezzanine    = argv[kMzn];
+  std::string rbcp_address = argv[kAddr];
+  std::string num_bytes    = argv[kNBytes];
 
   bool enslot_up  = false;
   bool enslot_low = false;
@@ -36,25 +39,26 @@ int main(int argc, char* argv[])
 
   RBCP::UDPRBCP udp_rbcp(board_ip, RBCP::gUdpPort, RBCP::DebugMode::kNoDisp);
   HUL::FPGAModule fpga_module(udp_rbcp);
-  //  fpga_module.WriteModule(BCT::kAddrReset, 0);
+
+  std::istringstream iss_addr(rbcp_address);
+  std::istringstream iss_nbytes(num_bytes);
+  uint32_t address_val;
+  uint32_t nbytes_val;
+  iss_addr   >> std::hex >> address_val;
+  iss_nbytes >> nbytes_val;
 
   if(enslot_up){
-    //    uint32_t reg = fpga_module.WriteModule(DCT::kAddrCtrlReg, 1);
-    //    fpga_module.WriteModule(DCT::kAddrCtrlReg, reg | DCT::kRegFRstU);
-    //    fpga_module.WriteModule(DCT::kAddrCtrlReg, reg);
+    uint32_t reg = ReadModuleIn2ndryFPGA(fpga_module, BBP::kUpper, address_val, nbytes_val);
+    std::cout << "#D: Read register (MZN-U): " << reg << " (0x" << std::hex << reg << ")" << std::endl;
   }
 
   if(enslot_low){
-    // uint32_t reg = fpga_module.WriteModule(DCT::kAddrCtrlReg, 1);
-    // fpga_module.WriteModule(DCT::kAddrCtrlReg, reg | DCT::kRegFRstD);
-    // fpga_module.WriteModule(DCT::kAddrCtrlReg, reg);
+    uint32_t reg = ReadModuleIn2ndryFPGA(fpga_module, BBP::kLower, address_val, nbytes_val);
+    std::cout << "#D: Read register (MZN-L): " << reg << " (0x" << std::hex << reg << ")" << std::endl;
   }
 
   
-  HUL::DAQ::DdrInitialize(fpga_module, enslot_up, enslot_low);
-  if(enslot_up)   HUL::DAQ::CalibLUT(fpga_module, BBP::kUpper);
-  if(enslot_low)  HUL::DAQ::CalibLUT(fpga_module, BBP::kLower);
-
   return 0;
 
 }// main
+

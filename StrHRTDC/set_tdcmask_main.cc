@@ -48,11 +48,13 @@ int main(int argc, char* argv[])
 	    << std::hex << ", 0x" << mask_up_val << ", 0x" << mask_low_val << std::endl;
 
   if(enslot_up){
+    std::cout << " -Set MZN-U" << std::endl;
     WriteModuleIn2ndryFPGA(fpga_module, BBP::kUpper,
 			   SHT_MZN::TDC::kAddrTdcMask, mask_up_val, 4 );
   }
 
   if(enslot_low){
+    std::cout << " -Set MZN-D" << std::endl;
     WriteModuleIn2ndryFPGA(fpga_module, BBP::kLower,
 			   SHT_MZN::TDC::kAddrTdcMask, mask_low_val, 4 );
   }

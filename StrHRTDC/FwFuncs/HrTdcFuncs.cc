@@ -24,64 +24,85 @@ namespace HUL::DAQ{
     uint32_t enable_up   = enslot_up  ? DCT::kRegEnableU : 0;
     uint32_t enable_down = enslot_low ? DCT::kRegEnableD : 0;
 
-    std::cout << "#D : Do DDR initialize" << std::endl;
-
-    // MZN
-    if(enslot_up){
-      WriteModuleIn2ndryFPGA(fmodule, BBP::kUpper,
-			     SHT_MZN::DCT::kAddrTestMode, 1, 1 );
-    }
+    std::cout << "#D : Initialize DDR receiver" << std::endl;
 
     if(enslot_low){
       WriteModuleIn2ndryFPGA(fmodule, BBP::kLower,
 			     SHT_MZN::DCT::kAddrTestMode, 1, 1 );
     }
-  
-    uint32_t reg =
-      enable_up   |
-      enable_down |
-      DCT::kRegTestModeU |
-      DCT::kRegTestModeD;
 
-    // Base
-    fmodule.WriteModule(DCT::kAddrCtrlReg, reg);
-    fmodule.WriteModule(DCT::kAddrInitDDR, 0);
-
-    sleep(1);
-    uint32_t ret = fmodule.ReadModule(DCT::kAddrRcvStatus, 1);
-
+    const int kMaxTraial = 5;
+    
     if(enslot_up){
-      if( ret & DCT::kRegBitAlignedU){
-	std::cout << "#D : DDR initialize succeeded (MZN-U)" << std::endl;
-      }else{
+      bool is_aligned = false;
+      
+      for(int i = 0; i<kMaxTraial; ++i){
+	uint32_t reg = enable_up | DCT::kRegTestModeU;
+	fmodule.WriteModule(DCT::kAddrCtrlReg, reg);
+	
+	WriteModuleIn2ndryFPGA(fmodule, BBP::kUpper,
+			       SHT_MZN::DCT::kAddrTestMode, 1, 1 );
+	
+	// Base
+	fmodule.WriteModule(DCT::kAddrInitDDR, 0);
+	sleep(1);
+
+	uint32_t ret = fmodule.ReadModule(DCT::kAddrRcvStatus, 1);	
+	if( ret & DCT::kRegBitAlignedU){
+	  std::cout << "#D : DDR initialize succeeded (MZN-U)" << std::endl;
+	  is_aligned = true;
+	  break;
+	}
+	
+	WriteModuleIn2ndryFPGA(fmodule, BBP::kUpper,
+			       SHT_MZN::DCT::kAddrTestMode, 0, 1 );
+      }
+
+      if(!is_aligned){
 	std::cout << "#E : Failed (MZN-U)" << std::endl;
-	exit(-1);
       }
-    }// bit aligned ?
 
-    if(enslot_low){
-      if( ret & DCT::kRegBitAlignedD){
-	std::cout << "#D : DDR initialize succeeded (MZN-D)" << std::endl;
-      }else{
-	std::cout << "#E : Failed (MZN-D)" << std::endl;
-	exit(-1);
-      }
-    }// bit aligned ?
-
-    // Set DAQ mode
-
-    if(enslot_up){
       WriteModuleIn2ndryFPGA(fmodule, BBP::kUpper,
-			     SHT_MZN::DCT::kAddrTestMode, 0, 1 );
-
-    }
+      			     SHT_MZN::DCT::kAddrTestMode, 0, 1 );
+      
+    }// bit aligned ?
 
     if(enslot_low){
+      bool is_aligned = false;
+      
+      for(int i = 0; i<kMaxTraial; ++i){
+	uint32_t reg = enable_down | DCT::kRegTestModeD;
+	fmodule.WriteModule(DCT::kAddrCtrlReg, reg);
+	
+	WriteModuleIn2ndryFPGA(fmodule, BBP::kLower,
+			       SHT_MZN::DCT::kAddrTestMode, 1, 1 );
+	
+	// Base
+	fmodule.WriteModule(DCT::kAddrInitDDR, 0);
+	sleep(1);
+
+	uint32_t ret = fmodule.ReadModule(DCT::kAddrRcvStatus, 1);	
+	if( ret & DCT::kRegBitAlignedD){
+	  std::cout << "#D : DDR initialize succeeded (MZN-D)" << std::endl;
+	  is_aligned = true;
+	  break;
+	}
+
+	WriteModuleIn2ndryFPGA(fmodule, BBP::kLower,
+			       SHT_MZN::DCT::kAddrTestMode, 0, 1 );
+      }
+
+      if(!is_aligned){
+	std::cout << "#E : Failed (MZN-D)" << std::endl;
+      }
+
       WriteModuleIn2ndryFPGA(fmodule, BBP::kLower,
 			     SHT_MZN::DCT::kAddrTestMode, 0, 1 );
-    }
 
-    reg = enable_up | enable_down;
+    }// bit aligned ?
+    
+
+    uint32_t reg = enable_up | enable_down;
     fmodule.WriteModule(DCT::kAddrCtrlReg, reg);
   
   }// DdrInitialize

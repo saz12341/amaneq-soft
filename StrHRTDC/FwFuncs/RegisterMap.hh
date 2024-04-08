@@ -10,19 +10,6 @@ namespace LBUS{
   
   namespace SHT_BASE{
     //-------------------------------------------------------------------------
-    // LSTC Module
-    //-------------------------------------------------------------------------
-    namespace LSTC{
-      enum LocalAddress
-	{
-	  kAddrRunStatus  = 0x00000000, // W/R, [0:0] Stcp RUN status
-	  kAddrAutoUpdate = 0x00100000, // W/R, [0:0] Gate number autoupdate
-	  kAddrHbcReset   = 0x00200000, // W,         Asert Hb counter reset
-	  kAddrGateNumber = 0x00300000  // W/R, [7:0] Stcp gate number
-	};
-    };
-
-    //-------------------------------------------------------------------------
     // DCT Module
     //-------------------------------------------------------------------------
     namespace DCT{
@@ -82,21 +69,41 @@ namespace LBUS{
   // ------------------------------------------------------------------------
   namespace SHT_MZN{
     // ------------------------------------------------------------------------
+    // MikumariUtil 
+    // ------------------------------------------------------------------------
+    namespace MUTIL{
+      enum LocalAddress
+	{
+	  kAddrCbtLaneUp       = 0x0000, // R,   [31:0] CBT lann-up status
+	  kAddrCbtTapValueIn   = 0x0010, // R,   [4:0] Tap value selected by CBT init process
+	  kAddrCbtTapValueOut  = 0x0020, // W,   [4:0] Tap value for fixed idelay value mode
+	  kAddrCbtBitSlipIn    = 0x0030, // R,   [3:0] Bitslip number by CBT init process
+	  kAddrCbtInit         = 0x0040, // W,   [31:0] CBT init request
+			  		        
+	  kAddrMikumariUp      = 0x0050, // R,   [31:0] Mikumari link-up status
+     			  
+	  kAddrLaccpUp         = 0x0060, // R,   [31:0] LACCP link-up status
+	  kAddrPartnerIpAddr   = 0x0070, // R,   [31:0] IP address in other side
+	  kAddrHbcOffset       = 0x0080, // R,   [15:0] Hbc offset
+	  kAddrLocalFineOffset = 0x0090, // R,   [15:0] Local fine offset
+	  kAddrLaccpFineOffset = 0x00A0, // R,   [15:0] LACCP fine offset
+	  kAddrHbfState        = 0x00B0, // W/R, [0:0] Hb frame state
+
+	  kAddrRegIndex        = 0x0100, // W/R, [5:0] W/R channel number
+	  kAddrNumLinks        = 0x0200  // R,   [5:0] Number of Mikumari Links
+     
+	};
+    };
+
+    
+    // ------------------------------------------------------------------------
     // DCT
     // ------------------------------------------------------------------------
     namespace DCT{
       enum LocalAddress
 	{
-	  kAddrTestMode  = 0x0000, // W/R [0:0] enable ddr test mode
-	  kAddrExtraPath = 0x0010, // W/R [0:0] enable clock caliblation
-	  kAddrGate      = 0x0020, // W/R [0:0] DAQ gate
-	  kAddrEnBlocks  = 0x0030  // W/R [1:0] 0: leading, 1: trailing
-	};
-
-      enum EnableBlocks
-	{
-	  kEnLeading  = 1,
-	  kEnTrailing = 2
+	  kAddrTestMode  = 0x1000, // W/R [0:0] enable ddr test mode
+	  kAddrExtraPath = 0x1010  // W/R [0:0] enable clock caliblation
 	};
     };
 
@@ -106,10 +113,10 @@ namespace LBUS{
     namespace TDC{
       enum LocalAddress
 	{
-	  kAddrControll   = 0x1010,  // W/R [2:0] Controll bits
-	  kAddrReqSwitch  = 0x1020,  // W,  Assert manual switch pulse
-	  kAddrStatus     = 0x1030,  // R,  [0:0] Read status
-	  kAddrTdcMask    = 0x1040   // W/R [31:0] Channel mask
+	  kAddrControll   = 0x2010,  // W/R [2:0] Controll bits
+	  kAddrReqSwitch  = 0x2020,  // W,  Assert manual switch pulse
+	  kAddrStatus     = 0x2030,  // R,  [0:0] Read status
+	  kAddrTdcMask    = 0x2040   // W/R [31:0] Channel mask
 	};
 
       enum ControllBits
@@ -124,7 +131,23 @@ namespace LBUS{
 	  kRegReadyLut    = 0x1
 	};
     };
+    
+    // ------------------------------------------------------------------------
+    // Scaler
+    // ------------------------------------------------------------------------
+    // Module ID: 0x8
+    namespace SCR{
+      enum LocalAddress
+	{
+	  kAddrScrReset  = 0x8000, // W,  [0:0] Assert counter soft reset
+	  kAddrLatchCnt  = 0x8010, // R,  [0:0] Read busy status, if busy is low, assert latch signal for counters
+	  kAddrNumCh     = 0x8020, // R,  [7:0] Read number of scaler channel
+	  kAddrReadFIFO  = 0x8100 // R,  FIFO read sequence
+     
+	};
+};
 
+    
     // ------------------------------------------------------------------------
     // SDS
     // ------------------------------------------------------------------------

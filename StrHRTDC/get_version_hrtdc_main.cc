@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
   uint32_t major_version = (bct_version >> 8) & 0xff;
   uint32_t minor_version = (bct_version) & 0xff;
 
-  std::cout << "#D: HUL firmware" << std::endl;
+  std::cout << "#D: AMANEQ firmware" << std::endl;
   std::cout << std::hex;
   std::cout << std::setfill('0') << std::right 
 	    << "FW ID      : 0x" << std::setw(4) << ((bct_version >> 16) & 0xffff) << std::endl;
