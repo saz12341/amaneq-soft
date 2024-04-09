@@ -113,10 +113,22 @@ namespace LBUS{
     namespace TDC{
       enum LocalAddress
 	{
-	  kAddrControll   = 0x2010,  // W/R [2:0] Controll bits
-	  kAddrReqSwitch  = 0x2020,  // W,  Assert manual switch pulse
-	  kAddrStatus     = 0x2030,  // R,  [0:0] Read status
-	  kAddrTdcMask    = 0x2040   // W/R [31:0] Channel mask
+	  kAddrControll     = 0x2010,  // W/R [2:0] Controll bits
+	  kAddrReqSwitch    = 0x2020,  // W,  Assert manual switch pulse
+	  kAddrStatus       = 0x2030,  // R,  [0:0] Read status
+	  kAddrTdcMask      = 0x2040,   // W/R [31:0] Channel mask
+
+	  kEnBypass         = 0x2050,  // W/R, [1:0]
+	  kTotFilterCtrl    = 0x2060,  // W/R, [1:0]
+	  kTotMinTh         = 0x2070,  // W/R, [15:0]
+	  kTotMaxTh         = 0x2080,  // W/R, [15:0]
+	  kTrgEmuCtrl       = 0x2090,  // W/R, [1:0]
+	  kTrgEmuDelay      = 0x20A0,  // W/R, [7:0]
+	  kTrgEmuWidth      = 0x20B0,  // W/R, [15:0]
+	  kHbfThrottCtrl    = 0x20C0,  // W/R, [3:0]
+	  kHbdUserReg       = 0x20D0,  // W,   [15:0]
+	  kSelfRecoveryMode = 0x20E0,  // W/R, [0:0]	  
+
 	};
 
       enum ControllBits
@@ -130,6 +142,33 @@ namespace LBUS{
 	{
 	  kRegReadyLut    = 0x1
 	};
+
+      enum Bypass
+	{
+	  kIndexTdcDelay = 0x1,
+	  kIndexParing   = 0x2
+	};
+
+      enum TotFilter
+	{
+	  kIndexEnFiler         = 0x1,
+	  kIndexTotZeroThrough  = 0x2
+	};
+
+      enum TrgEmuMode
+	{
+	  kTriggerMode     = 0x1,
+	  kVetoMode        = 0x2
+	};
+
+      enum HbfThrottling
+	{
+	  kIndex1in2  = 0x1,
+	  kIndex1in4  = 0x2,
+	  kIndex1in8  = 0x4,
+	  kIndex1in16 = 0x8
+	};
+
     };
     
     // ------------------------------------------------------------------------
