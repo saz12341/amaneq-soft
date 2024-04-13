@@ -11,14 +11,14 @@
 #include "BctBusBridgeFunc.hh"
 
 // Main ___________________________________________________________________________
-enum argIndex{kBin, kIp, kMzn, kFilePath};
+enum argIndex{kBin, kIp, kMzn, kFilePath, kApp};
 using namespace LBUS;
 using namespace LBUS::SHT_BASE;
 int main(int argc, char* argv[])
 {
   if(1 == argc){
     std::cout << "Usage\n";
-    std::cout << "read_mzn_scr [IP address] [Mezzanine existence] [Output file path]" << std::endl;
+    std::cout << "read_mzn_scr [IP address] [Mezzanine existence] [Output file path] [append (option)]" << std::endl;
     std::cout << " Description of mezzanine existence" << std::endl;
     std::cout << " - up   (mezzanine is attached on upper slot)" << std::endl;
     std::cout << " - low  (mezzanine is attached on lower slot)" << std::endl;
@@ -30,12 +30,14 @@ int main(int argc, char* argv[])
   const std::string kBoardIp   = argv[kIp];
   const std::string kMezzanine = argv[kMzn];
   const std::string kOutPath   = argv[kFilePath];
+  std::ios_base::openmode ios_flag = std::ios::binary;
+  if(argc == kApp+1) ios_flag = ios_flag | std::ios::app;
 
   uint32_t kBbpAddr = BBP::kUpper;
   if(kMezzanine == "up")  { kBbpAddr = BBP::kUpper; }
   if(kMezzanine == "low") { kBbpAddr = BBP::kLower; }
 
-  std::ofstream ofs(kOutPath.c_str(), std::ios::binary);
+  std::ofstream ofs(kOutPath.c_str(), ios_flag);
   if(!ofs.is_open()){
     std::cerr << "#E: File cannot be not created (" << kFilePath << ")." << std::endl;
     return 0;
