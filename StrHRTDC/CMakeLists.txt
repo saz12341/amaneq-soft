@@ -3,6 +3,7 @@ set(LIB_NAME FwFuncs)
 
 foreach(val IN ITEMS
     get_version_hrtdc;
+    gen_mzn_userreset;
     initialize;
     inject_error_mzn_sem;
     read_mzn_register;
