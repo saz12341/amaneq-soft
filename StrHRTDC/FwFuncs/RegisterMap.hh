@@ -15,13 +15,9 @@ namespace LBUS{
     namespace DCT{
       enum LocalAddress
 	{
-	  kAddrMikuStatus   = 0x20000000, // W/R, [1:0] Internal MIKUMARI link up status
-	  kAddrInitCbt      = 0x20100000, // W,         Assert CBT init signal
 	  kAddrInitDDR      = 0x20200000, // W,         Assert DDR Receiver initialize
 	  kAddrCtrlReg      = 0x20300000, // W/R, [5:0] DDR receiver controll register
 	  kAddrRcvStatus    = 0x20400000, // R,   [3:0] DDR receiver status
-	  kAddrStcpStatusU  = 0x20500000, // R,   [7:0] StcpFlag form MZN-U
-	  kAddrStcpStatusD  = 0x20600000  // R,   [7:0] StcpFlag form MZN-D
 	};
 
       enum Ctrl
@@ -113,15 +109,15 @@ namespace LBUS{
     namespace TDC{
       enum LocalAddress
 	{
-	  kAddrControll     = 0x2010,  // W/R [2:0] Controll bits
+	  kAddrControll     = 0x2010,  // W/R [1:0] Controll bits
 	  kAddrReqSwitch    = 0x2020,  // W,  Assert manual switch pulse
 	  kAddrStatus       = 0x2030,  // R,  [0:0] Read status
 	  kAddrTdcMask      = 0x2040,   // W/R [31:0] Channel mask
 
 	  kEnBypass         = 0x2050,  // W/R, [1:0]
 	  kTotFilterCtrl    = 0x2060,  // W/R, [1:0]
-	  kTotMinTh         = 0x2070,  // W/R, [15:0]
-	  kTotMaxTh         = 0x2080,  // W/R, [15:0]
+	  kTotMinTh         = 0x2070,  // W/R, [21:0]
+	  kTotMaxTh         = 0x2080,  // W/R, [21:0]
 	  kTrgEmuCtrl       = 0x2090,  // W/R, [1:0]
 	  kTrgEmuDelay      = 0x20A0,  // W/R, [7:0]
 	  kTrgEmuWidth      = 0x20B0,  // W/R, [15:0]
@@ -134,8 +130,7 @@ namespace LBUS{
       enum ControllBits
 	{
 	  kRegThrough     = 0x1,
-	  kRegAutosw      = 0x2,
-	  kRegStopDout    = 0x4
+	  kRegAutosw      = 0x2
 	};
 
       enum StatusBits
@@ -181,9 +176,23 @@ namespace LBUS{
 	  kAddrScrReset  = 0x8000, // W,  [0:0] Assert counter soft reset
 	  kAddrLatchCnt  = 0x8010, // R,  [0:0] Read busy status, if busy is low, assert latch signal for counters
 	  kAddrNumCh     = 0x8020, // R,  [7:0] Read number of scaler channel
+	  kAddrStatus    = 0x8030, // R,  [7:0] Status register
 	  kAddrReadFIFO  = 0x8100 // R,  FIFO read sequence
      
 	};
+
+      enum IndexReset
+	{
+	  kIndexLocalReset  = 0x1,
+	  kIndexGlobalReset = 0x2,
+	  kIndexFifoReset   = 0x4
+	};
+
+      enum IndexStatus
+	{
+	  kIndexFifoEmpty   = 0x1
+	};
+
 };
 
     

@@ -18,7 +18,7 @@ namespace LBUS{
 	  kTdcMaskMznD      = 0x1030'0000,  // W/R, [31:0] Channel mask for 96-127 ch
 	  kTdcMaskEx        = 0x10E0'0000,  // W/R, [31:0] Channel mask for 128-159 ch
 	  		    
-	  kEnBypass         = 0x1040'0000,  // W/R, [1:0]
+	  kEnBypass         = 0x1040'0000,  // W/R, [2:0]
 	  		    
 	  kTotFilterCtrl    = 0x1050'0000,  // W/R, [1:0]
 	  kTotMinTh         = 0x1060'0000,  // W/R, [15:0]
@@ -37,8 +37,9 @@ namespace LBUS{
 
       enum Bypass
 	{
-	  kIndexTdcDelay = 0x1,
-	  kIndexParing   = 0x2
+	  kIndexTdcDelay     = 0x1,
+	  kIndexParing       = 0x2,
+	  kIndexLaccpOfsCorr = 0x4
 	};
 
       enum TotFilter
